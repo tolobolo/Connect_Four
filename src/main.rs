@@ -9,6 +9,7 @@ enum Location {
     Red,
     Yellow,
 }
+#[derive(Debug, PartialEq)]
 enum Player {
     Red,
     Yellow,
@@ -47,7 +48,17 @@ impl ConnectFour {
         std::io::stdin()
             .read_line(&mut input)
             .expect("Failed to read line");
-        return input.trim().parse::<usize>().expect("Failed to read line");
+
+        let num = input.trim().parse::<usize>().expect("Failed to read line");
+
+        if num <= self.nb_columns
+            && self.board[self.nb_columns * (1 - 1) + num - 1] == Location::Empty
+        {
+            return num;
+        } else {
+            println!("Invalid input. The number '{}' is not a valid column.", num);
+            return self.input(message);
+        }
     }
 
     fn place_tile(&mut self) {
@@ -83,11 +94,26 @@ impl ConnectFour {
         println!();
     }
 
+    fn choice_symbol(&mut self) {
+        if self.current_player == Player::Red {
+            self.current_player = Player::Yellow
+        } else if self.current_player == Player::Yellow {
+            self.current_player = Player::Red
+        } else {
+            println!("symbol is wrong {:?}", self.current_player)
+        }
+    }
+
+    fn check_four_row(&self) -> bool {
+        false
+    }
+
     fn round(&mut self) {
         self.print_board();
-        loop {
+        while !self.check_four_row() {
             self.place_tile();
             self.print_board();
+            self.choice_symbol();
         }
     }
 }
