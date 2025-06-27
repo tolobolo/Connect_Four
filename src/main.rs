@@ -49,15 +49,21 @@ impl ConnectFour {
             .read_line(&mut input)
             .expect("Failed to read line");
 
-        let num = input.trim().parse::<usize>().expect("Failed to read line");
-
-        if num <= self.nb_columns
-            && self.board[self.nb_columns * (1 - 1) + num - 1] == Location::Empty
-        {
-            return num;
-        } else {
-            println!("Invalid input. The number '{}' is not a valid column.", num);
-            return self.input(message);
+        match input.trim().parse::<usize>() {
+            Ok(num) => {
+                if num <= self.nb_columns
+                    && self.board[self.nb_columns * (1 - 1) + num - 1] == Location::Empty
+                {
+                    return num;
+                } else {
+                    println!("Invalid input. The number '{}' is not a valid column.", num);
+                    return self.input(message);
+                }
+            }
+            Err(_) => {
+                println!("that is not a number");
+                return self.input(message);
+            }
         }
     }
 
@@ -105,6 +111,41 @@ impl ConnectFour {
     }
 
     fn check_four_row(&self) -> bool {
+        let coin = match self.current_player {
+            Player::Red => Location::Red,
+            Player::Yellow => Location::Yellow,
+        };
+        //vannrett
+        for row in 1..self.nb_columns {
+            for i in 1..3 {
+                if self.board[self.nb_columns * (row - 1) + i - 1] == coin
+                    && self.board[self.nb_columns * (row - 1) + i + 1 - 1] == coin
+                    && self.board[self.nb_columns * (row - 1) + i + 2 - 1] == coin
+                    && self.board[self.nb_columns * (row - 1) + i + 3 - 1] == coin
+                {
+                    println!("{:?} win", coin);
+                    return true;
+                } else {
+                    println!("no win")
+                }
+            }
+        }
+        //loddrett
+        for col in 1..self.nb_rows {
+            for i in 1..3 {
+                if self.board[(col - 1) * self.nb_rows + i - 1] == coin
+                    && self.board[(col - 1) * self.nb_rows + i + 1 - 1] == coin
+                    && self.board[(col - 1) * self.nb_rows + i + 2 - 1] == coin
+                    && self.board[(col - 1) * self.nb_rows + i + 3 - 1] == coin
+                {
+                    println!("{:?} win", coin);
+                    return true;
+                } else {
+                    println!("no win")
+                }
+            }
+        }
+
         false
     }
 
