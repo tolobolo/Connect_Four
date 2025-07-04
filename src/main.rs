@@ -115,34 +115,11 @@ impl ConnectFour {
             Player::Red => Location::Red,
             Player::Yellow => Location::Yellow,
         };
-        //vannrett
-        for row in 1..self.nb_columns {
-            for i in 1..3 {
-                if self.board[self.nb_columns * (row - 1) + i - 1] == coin
-                    && self.board[self.nb_columns * (row - 1) + i + 1 - 1] == coin
-                    && self.board[self.nb_columns * (row - 1) + i + 2 - 1] == coin
-                    && self.board[self.nb_columns * (row - 1) + i + 3 - 1] == coin
-                {
-                    println!("{:?} win", coin);
-                    return true;
-                } else {
-                    println!("no win")
-                }
-            }
-        }
-        //loddrett
-        for col in 1..self.nb_rows {
-            for i in 1..3 {
-                if self.board[(col - 1) * self.nb_rows + i - 1] == coin
-                    && self.board[(col - 1) * self.nb_rows + i + 1 - 1] == coin
-                    && self.board[(col - 1) * self.nb_rows + i + 2 - 1] == coin
-                    && self.board[(col - 1) * self.nb_rows + i + 3 - 1] == coin
-                {
-                    println!("{:?} win", coin);
-                    return true;
-                } else {
-                    println!("no win")
-                }
+
+        for idx in 0..self.board.len() - 4 {
+            if self.board[idx..(idx + 4)].iter().all(|tile| *tile == coin) {
+                println!(" {:?} has won", self.current_player);
+                return true;
             }
         }
 
@@ -152,9 +129,9 @@ impl ConnectFour {
     fn round(&mut self) {
         self.print_board();
         while !self.check_four_row() {
+            self.choice_symbol();
             self.place_tile();
             self.print_board();
-            self.choice_symbol();
         }
     }
 }
