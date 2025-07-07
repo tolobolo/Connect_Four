@@ -115,9 +115,27 @@ impl ConnectFour {
             Player::Red => Location::Red,
             Player::Yellow => Location::Yellow,
         };
-
+        //vannrett
         for idx in 0..self.board.len() - 4 {
             if self.board[idx..(idx + 4)].iter().all(|tile| *tile == coin) {
+                println!(" {:?} has won", self.current_player);
+                return true;
+            }
+        }
+
+        //loddrett
+        let mut ajecent_coin: usize = 0;
+        for idx in 0..=self.board.len() - 1 - 4 * self.nb_columns {
+            ajecent_coin = 0;
+
+            //dbg!((idx..=idx + 4 * self.nb_columns).step_by(self.nb_columns));
+            for i in (idx..idx + 4 * self.nb_columns).step_by(self.nb_columns) {
+                if self.board[i] == coin {
+                    ajecent_coin += 1
+                }
+            }
+
+            if ajecent_coin == 4 {
                 println!(" {:?} has won", self.current_player);
                 return true;
             }
