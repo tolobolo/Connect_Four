@@ -206,11 +206,8 @@ mod tests {
             e, e, e, e, e, e, e, //
             e, e, e, e, e, e, e, //
         ]);
-        assert_false!(cf.has_won_vertical(&Player::Red));
-        assert_false!(cf.has_won_horizontal(&Player::Red));
-
-        assert_false!(cf.has_won_horizontal(&Player::Yellow));
-        assert_false!(cf.has_won_horizontal(&Player::Yellow));
+        assert_false!(cf.has_won(&Player::Red));
+        assert_false!(cf.has_won(&Player::Red));
     }
 
     #[test]
@@ -227,8 +224,10 @@ mod tests {
             e, e, e, e, e, e, e, //
             y, y, y, y, y, e, e, //
         ]);
-        assert_false!(cf.has_won(&Player::Red));
-        assert_true!(cf.has_won(&Player::Yellow));
+        assert_false!(cf.has_won_vertical(&Player::Red));
+        assert_false!(cf.has_won_vertical(&Player::Yellow));
+        assert_false!(cf.has_won_horizontal(&Player::Red));
+        assert_true!(cf.has_won_horizontal(&Player::Yellow));
     }
     #[test]
     #[ignore]
@@ -263,6 +262,8 @@ mod tests {
         ]);
         assert_false!(cf.has_won_horizontal(&Player::Red));
         assert_true!(cf.has_won_horizontal(&Player::Yellow));
+        assert_false!(cf.has_won_vertical(&Player::Red));
+        assert_false!(cf.has_won_vertical(&Player::Yellow));
     }
     #[test]
     fn test_veritcal() {
@@ -279,5 +280,7 @@ mod tests {
         ]);
         assert_false!(cf.has_won_vertical(&Player::Red));
         assert_true!(cf.has_won_vertical(&Player::Yellow));
+        assert_false!(cf.has_won_horizontal(&Player::Red));
+        assert_false!(cf.has_won_horizontal(&Player::Yellow));
     }
 }
