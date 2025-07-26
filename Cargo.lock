@@ -3,5 +3,14 @@
 version = 4
 
 [[package]]
+name = "all_asserts"
+version = "2.3.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "514ce16346f9fc96702fd52f2ae7e383b185516ee6f556efd7c3176be8fe7bea"
+
+[[package]]
 name = "connect_four"
 version = "0.1.0"
+dependencies = [
+ "all_asserts",
+]
