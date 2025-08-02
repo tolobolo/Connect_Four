@@ -348,4 +348,22 @@ mod tests {
         assert_false!(cf.has_won_horizontal(&Player::Red));
         assert_false!(cf.has_won_horizontal(&Player::Yellow));
     }
+
+    #[test]
+    fn test_draw() {
+        let e = Location::Empty;
+        let y = Location::Yellow;
+        let cf = ConnectFour::new_with_state(vec![
+            r, y, r, y, r, y, r, //
+            r, y, r, y, r, y, r, //
+            r, y, r, y, r, y, r, //
+            y, r, y, r, y, r, y, //
+            y, r, y, r, y, r, y, //
+            y, r, y, r, y, r, y, //
+        ]);
+        assert_false!(cf.has_won_vertical(&Player::Red));
+        assert_true!(cf.has_won_vertical(&Player::Yellow));
+        assert_false!(cf.has_won_horizontal(&Player::Red));
+        assert_false!(cf.has_won_horizontal(&Player::Yellow));
+    }
 }
