@@ -1,3 +1,5 @@
+use std::iter::Empty;
+
 fn main() {
     let mut game = ConnectFour::new();
 
@@ -146,7 +148,21 @@ impl ConnectFour {
         if self.has_won_diagonal(&player) {
             return true;
         }
+        if self.has_won_draw() {
+            return true;
+        }
         return false;
+    }
+    fn has_won_draw(&self) -> bool {
+        if self
+            .board
+            .iter()
+            .all(|tile| *tile == Location::Red || *tile == Location::Yellow)
+        {
+            println!("its a draw")
+            return true;
+        }
+        false
     }
 
     fn has_won_diagonal(&self, player: &Player) -> bool {
@@ -351,7 +367,7 @@ mod tests {
 
     #[test]
     fn test_draw() {
-        let e = Location::Empty;
+        let r = Location::Red;
         let y = Location::Yellow;
         let cf = ConnectFour::new_with_state(vec![
             r, y, r, y, r, y, r, //
@@ -362,8 +378,9 @@ mod tests {
             y, r, y, r, y, r, y, //
         ]);
         assert_false!(cf.has_won_vertical(&Player::Red));
-        assert_true!(cf.has_won_vertical(&Player::Yellow));
+        assert_false!(cf.has_won_vertical(&Player::Yellow));
         assert_false!(cf.has_won_horizontal(&Player::Red));
         assert_false!(cf.has_won_horizontal(&Player::Yellow));
+        assert_true!(cf.has_won_draw())
     }
 }
